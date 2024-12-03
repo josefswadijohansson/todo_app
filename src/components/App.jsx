@@ -15,37 +15,56 @@ function App(){
 
 
     function loadTodos(){
-        const jsonData = JSON.parse(localStorage.getItem(savedKey));
+        const savedData = localStorage.getItem(savedKey);
+
+        if(savedData === null || savedData === undefined){
+            return;
+        }
+
+        const jsonData = JSON.parse(savedData);
 
         console.log(jsonData);
 
         setTodoItems(jsonData);
     }
 
-    function saveTodos(){
-        const jsonData = JSON.stringify(todoItems);
+    function saveTodos(values){
+        if(values != null){
+            const jsonData = JSON.stringify(values);
 
-        localStorage.setItem(savedKey, jsonData);
+            localStorage.setItem(savedKey, jsonData);
+
+            console.log("Save with already values");
+
+        } else {
+            const jsonData = JSON.stringify(todoItems);
+
+            localStorage.setItem(savedKey, jsonData);
+
+            console.log("Save with todo values");
+        }
+
+        
     }
 
     function addTodoItem(){
         const newTodoItem = {id:getNextId(), isDone:false, content:""};
 
-        setTodoItems((prevValues) => {
-            return [...prevValues, newTodoItem]
-        });
+        const updatedList = [...todoItems, newTodoItem];
 
-        saveTodos();
+        setTodoItems(updatedList);
+
+        saveTodos(updatedList);
     }
 
     function deleteTodoItem(id){
-        setTodoItems( (prevValues) => {
-            return prevValues.filter( (item) => {
-                return item.id != id;
-            })
+        const filteredValues = todoItems.filter( (item) =>  {
+            return item.id !== id;
         });
 
-        saveTodos();
+        setTodoItems(filteredValues);
+
+        saveTodos(filteredValues);
     }
 
     function getNextId(){
@@ -55,7 +74,7 @@ function App(){
 
     function updateTodoContent(id, content){
         const todoItem = todoItems.find((item) => {
-            return item.id == id;
+            return item.id === id;
         } );  
 
         todoItem.content = content;
@@ -65,7 +84,7 @@ function App(){
 
     function updateTodoIsDone(id, isDone){
         const todoItem = todoItems.find((item) => {
-            return item.id == id;
+            return item.id === id;
         } );
 
         todoItem.isDone = isDone;
