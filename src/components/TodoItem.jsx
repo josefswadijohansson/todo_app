@@ -11,7 +11,7 @@ function TodoItem(props){
 
     return (
     <div className='todo-item'>
-        <TodoContentArea id={props.id}/>
+        <TodoContentArea id={props.id} onUpdateContent={props.onUpdateContent} onUpdateIsDone={props.onUpdateIsDone} content={props.content} isDone={props.isDone}/>
         <RoundButton text="" onClick={handleDelete} specialClass={"delete-button"}/>
     </div>);
 }

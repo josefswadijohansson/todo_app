@@ -1,9 +1,20 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 
 
 function TodoContentArea(props){
     const [isDone, setIsDone] = useState(props.isDone);
     const [content, setContent] = useState("");
+    const [rowsCount, setRowsCount] = useState(1);
+
+    useEffect(() => {
+        setContent(props.content);
+
+        const textWidth = calculateTextWidth(props.content);
+
+        const rows = (textWidth / 555.0) + 1; 
+
+        setRowsCount(parseInt(rows));
+    }, [props.content]);
 
     function calculateTextWidth(text) {
         const canvas = document.createElement("canvas");
@@ -17,7 +28,11 @@ function TodoContentArea(props){
 
 
     function handleChecked(){
-        setIsDone(!isDone);
+        const newValue = !isDone;
+
+        setIsDone(newValue);
+
+        props.onUpdateIsDone(props.id, newValue);
     }
 
     function handleTextAreaChange(event){
@@ -29,14 +44,17 @@ function TodoContentArea(props){
 
         const rows = (textWidth / 555.0) + 1; 
 
-        event.target.rows = parseInt(rows);
+        setRowsCount(rows);
     }
 
+    function handleChangeContent(){
+        props.onUpdateContent(props.id, content);
+    }
 
     return (
     <div className="content-area" style={isDone ? {backgroundColor:"#CCFFCC"} : {backgroundColor:"white"}}>
-        <input type="checkbox" onClick={handleChecked} value={isDone}/>
-        <textarea id={props.id} maxLength={256} onChange={handleTextAreaChange} style={isDone ? {backgroundColor:"#CCFFCC"} : {backgroundColor:"white"}} spellCheck={false} autoFocus rows={1}/>
+        <input type="checkbox" onClick={handleChecked} value={props.isDone} defaultChecked={props.isDone}/>
+        <textarea id={props.id} value={content} onBlur={handleChangeContent} maxLength={256} onChange={handleTextAreaChange} style={isDone ? {backgroundColor:"#CCFFCC"} : {backgroundColor:"white"}} spellCheck={false} rows={rowsCount}/>
     </div>);
 }
 
