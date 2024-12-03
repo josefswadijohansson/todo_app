@@ -23,8 +23,6 @@ function App(){
 
         const jsonData = JSON.parse(savedData);
 
-        console.log(jsonData);
-
         if(jsonData.length > 0){
             const adjustedId = jsonData[jsonData.length - 1].id + 1;
             setCounter(adjustedId);
