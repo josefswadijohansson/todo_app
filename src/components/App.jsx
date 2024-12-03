@@ -34,6 +34,8 @@ function App(){
         setTodoItems((prevValues) => {
             return [...prevValues, newTodoItem]
         });
+
+        saveTodos();
     }
 
     function deleteTodoItem(id){
@@ -41,7 +43,9 @@ function App(){
             return prevValues.filter( (item) => {
                 return item.id != id;
             })
-        })
+        });
+
+        saveTodos();
     }
 
     function getNextId(){
