@@ -39,14 +39,10 @@ function App(){
 
             localStorage.setItem(savedKey, jsonData);
 
-            console.log("Save with already values");
-
         } else {
             const jsonData = JSON.stringify(todoItems);
 
             localStorage.setItem(savedKey, jsonData);
-
-            console.log("Save with todo values");
         }
 
         
